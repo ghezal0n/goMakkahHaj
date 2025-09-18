@@ -7,7 +7,7 @@
 
 body {
   /* je vais la changer  */
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
   line-height: 1.6;
   color: #333;
 }
@@ -41,6 +41,10 @@ body {
 
 .contact-info {
   text-align: right;
+}
+
+.ligne {
+  border-top: 1px solid #deb954;
 }
 
 .phone-number {
@@ -138,6 +142,7 @@ body {
 /* Main Content */
 .main-container {
   padding: 48px 20px;
+  background-color: #f5f5f5; /* couleur gris foncé */
 }
 .main-container2 {
   padding: 48px 20px;
@@ -155,7 +160,9 @@ body {
 }
 
 .section {
+  background-color: #f9fafb;
   margin-bottom: 48px;
+  padding: 0px 50px;
 }
 
 .section-title {
@@ -165,7 +172,7 @@ body {
 }
 
 .section-title.blue {
-  color: #1d4ed8;
+  color: #2b6cb3;
 }
 
 .text-content {
@@ -205,9 +212,8 @@ body {
 /* Steps Grid */
 .steps-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
-  margin-bottom: 32px;
 }
 
 @media (min-width: 768px) {
@@ -223,35 +229,40 @@ body {
 }
 
 .step-card {
-  background-color: #f9fafb;
+  background-color: #fff;
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 0px;
+  border-top: 3px solid #deb954; /* ligne dorée en haut */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  text-align: center;
 }
 
 .step-number {
-  width: 48px;
-  height: 48px;
-  background-color: #be9e49;
-  color: white;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #deb954; /* cercle doré */
+  color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 16px;
+  margin: 0 auto 16px; /* centré */
+  background: #deb954; /* fond blanc */
 }
 
 .step-title {
   font-weight: 600;
   margin-bottom: 8px;
+  font-size: 14px;
+  color: #000;
 }
 
 .step-description {
   font-size: 14px;
-  color: #6b7280;
+  color: #444;
 }
-
 /* Formules */
 .formula-item {
   border-left: 4px solid #be9e49;
@@ -294,19 +305,25 @@ body {
   text-align: center;
 }
 
+.service-item {
+  display: flex;
+  align-items: center; /* aligne verticalement icône et titre */
+  gap: 12px; /* espace entre icône et texte */
+}
+
 .service-icon {
   font-size: 32px;
-  margin-bottom: 16px;
+  flex-shrink: 0; /* empêche l’icône de rétrécir */
 }
 
 .service-title {
   font-weight: 600;
   color: #be9e49;
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .service-description {
-  font-size: 14px;
+  margin: 0;
   color: #6b7280;
 }
 
@@ -388,6 +405,119 @@ body {
   background-color: #be9e49;
 }
 
+/* Container des cartes */
+.packs-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin: 40px auto;
+  max-width: 1000px;
+}
+
+/* Carte */
+.pack-card {
+  flex: 1;
+  min-width: 320px;
+  max-width: 450px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  padding: 30px 20px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Ruban */
+.pack-ribbon {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: #22c55e; /* vert */
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 4px;
+}
+
+.pack-ribbon.gold {
+  background: #be9e49; /* doré */
+}
+
+/* Titre */
+.pack-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 40px 0 15px;
+}
+
+.pack-title .highlight {
+  color: #2b6cb3; /* bleu pour gratuit */
+}
+
+.pack-title.gold-text .highlight {
+  color: #be9e49; /* doré pour premium */
+}
+
+/* Barre centrale */
+.pack-bar {
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.free-bar {
+  background: #22c55e;
+  color: white;
+}
+
+.gold-bar {
+  background: #be9e49;
+  color: white;
+}
+
+/* Liste */
+.pack-features {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pack-features li {
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 15px;
+  color: #444;
+}
+
+/* Boutons */
+.pack-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.free-btn {
+  background: #2b6cb3;
+  color: white;
+  font-size: 13px;
+}
+
+.premium-btn {
+  background: #be9e49;
+  color: white;
+  font-size: 13px;
+}
+
 .stats-text {
   color: white;
   font-weight: bold;
@@ -413,12 +543,12 @@ body {
 }
 
 .package-button.free-btn {
-  background-color: #2563eb;
+  background-color: #2b6cb3;
   color: white;
 }
 
 .package-button.free-btn:hover {
-  background-color: #1d4ed8;
+  background-color: #2b6cb3;
 }
 
 .package-button.premium-btn {
@@ -497,12 +627,12 @@ body {
 /* Serenity Section */
 .subtitle {
   font-size: 20px;
-  color: #1d4ed8;
+  color: #2b6cb3;
   margin-bottom: 24px;
 }
 
 .highlight {
-  color: #2563eb;
+  color: #2b6cb3;
 }
 
 .serenity-content {
@@ -587,28 +717,53 @@ body {
 }
 
 .faq-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.faq-item {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #be9e49;
   border-radius: 8px;
   overflow: hidden;
 }
 
+.faq-item {
+  border-bottom: 1px solid #e5e5e5;
+}
+
 .faq-question {
   width: 100%;
+  background: #fff;
   padding: 16px;
   text-align: left;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: none;
-  border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 13px;
+}
+
+.faq-answer {
+  background: #fafafa;
+  padding: 16px;
+  line-height: 1.6;
+}
+
+.faq-answer h4 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.faq-answer ul,
+.faq-answer ol {
+  margin-left: 20px;
+  margin-bottom: 12px;
+}
+
+.solutions-title {
+  color: #be9e49;
+}
+
+.read-more {
+  color: #be9e49;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .faq-question:hover {
@@ -629,9 +784,66 @@ body {
   transform: rotate(180deg);
 }
 
-.faq-answer {
-  padding: 0 16px 16px;
-  color: #6b7280;
+.faq-container2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+  gap: 16px; /* espace entre les colonnes et lignes */
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.faq-item2 {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.faq-question2 {
+  width: 100%;
+  background: #fff;
+  padding: 16px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.faq-answer2 {
+  background: #fafafa;
+  padding: 16px;
+  line-height: 1.6;
+}
+
+.faq-answer2 h4 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.faq-answer2 ul,
+.faq-answer2 ol {
+  margin-left: 20px;
+  margin-bottom: 12px;
+}
+
+.faq-text2 {
+  font-weight: 500;
+}
+
+.faq-icon2 {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s;
+}
+
+.faq-icon2.open {
+  transform: rotate(180deg);
+}
+
+.faq-question2:hover {
+  background-color: #f9fafb;
 }
 
 /* Sidebar */
@@ -640,6 +852,8 @@ body {
   flex-direction: column;
   gap: 24px;
   height: 600px;
+  width: 330px;
+  margin-left: 150px; /* ajuste cette valeur selon ton besoin */
 }
 
 .support-card {
@@ -647,6 +861,7 @@ body {
   color: white;
   padding: 24px;
   border-radius: 8px;
+  text-align: center;
 }
 
 .support-header {
@@ -671,7 +886,7 @@ body {
 }
 
 .support-phone {
-  font-size: 24px;
+  font-size: 35px;
   font-weight: bold;
   margin-bottom: 8px;
 }
@@ -684,7 +899,7 @@ body {
   background-color: white;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 16px;
+  /* padding: 16px; */
 }
 
 .sidebar-title {
@@ -720,7 +935,7 @@ body {
 
 /* Footer */
 .footer {
-  background-color: #1e40af;
+  background-color: #2563eb;
   color: white;
   padding: 48px 0;
 }
@@ -778,7 +993,6 @@ body {
 }
 
 .footer-divider {
-  border-top: 1px solid #3b82f6;
   padding-top: 24px;
 }
 
@@ -808,12 +1022,6 @@ body {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-}
-
-.country-badge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .country-icon {

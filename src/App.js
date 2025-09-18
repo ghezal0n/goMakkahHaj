@@ -267,42 +267,111 @@ const GoMakkahPage = () => {
               <p className="support-text">
                 GO-MAKKAH vous offre hotline support NUSUK
               </p>
+              <div className="ligne"></div>
               <div className="support-phone">01 49 87 70 21</div>
+              <div className="ligne"></div>
               <p className="support-info">Ligne ouvert 24h/2h</p>
               <p className="support-info">Avec la langue Arabe et Français</p>
             </div>
 
             {/* FAQ Sidebar */}
             <div className="sidebar-faq">
-              <h3 className="sidebar-title">
-                Compte Nusuk bloqué à la création ?
-              </h3>
+              <div className="faq-container">
+                {[
+                  {
+                    question: "Compte Nusuk bloqué à la création ?",
+                    answer: (
+                      <div>
+                        <h4>
+                          <strong>Introduction</strong>
+                        </h4>
+                        <p>
+                          Chaque année, de nombreux pèlerins français
+                          rencontrent des difficultés dès la première étape : la
+                          création du compte sur la plateforme Nusuk. Sans ce
+                          compte, impossible d’accéder aux packages du Hajj.
+                        </p>
 
-              <div className="sidebar-section">
-                <h4 className="sidebar-subtitle">Solutions possibles</h4>
-                <ol className="solution-list">
-                  <li>
-                    Vérifiez que vos données correspondent exactement au
-                    passeport (majuscules, accents).
-                  </li>
-                  <li>
-                    Utilisez un numéro de téléphone valide (idéalement un
-                    portable international).
-                  </li>
-                </ol>
-                <p className="read-more">Afficher la suite ›</p>
-              </div>
+                        <h4>
+                          <strong>Causes fréquentes</strong>
+                        </h4>
+                        <ul>
+                          <li>
+                            Informations personnelles mal saisies (nom, numéro
+                            de passeport).
+                          </li>
+                          <li>
+                            Adresse email ou numéro de téléphone non validés.
+                          </li>
+                          <li>
+                            Tentatives multiples entraînant un blocage
+                            automatique.
+                          </li>
+                        </ul>
 
-              <div className="sidebar-section">
-                <h4 className="sidebar-subtitle">
-                  Carte bancaire refusée par Nusuk ?
-                </h4>
-              </div>
+                        <h4 className="solutions-title">
+                          <strong>Solutions possibles</strong>
+                        </h4>
+                        <ol>
+                          <li>
+                            Vérifiez que vos données correspondent exactement au
+                            passeport (majuscules, accents).
+                          </li>
+                          <li>
+                            Utilisez un numéro de téléphone valide (idéalement
+                            un portable international).
+                          </li>
+                        </ol>
 
-              <div className="sidebar-section">
-                <h4 className="sidebar-subtitle">
-                  Forfait confirmé puis annulé sur Nusuk?
-                </h4>
+                        <p className="read-more">Afficher la suite ?</p>
+                      </div>
+                    ),
+                  },
+                  {
+                    question: "Carte bancaire refusée par Nusuk ?",
+                    answer: (
+                      <div>
+                        <p>
+                          Cela peut être dû à un plafond bancaire, une carte non
+                          compatible ou un problème côté plateforme Nusuk.
+                          Vérifiez auprès de votre banque ou essayez une autre
+                          carte.
+                        </p>
+                      </div>
+                    ),
+                  },
+                  {
+                    question: "Forfait confirmé puis annulé sur Nusuk?",
+                    answer: (
+                      <div>
+                        <p>
+                          Ce cas survient lorsque le quota est atteint ou qu’un
+                          problème technique intervient. Contactez rapidement
+                          l’assistance Nusuk ou votre agence.
+                        </p>
+                      </div>
+                    ),
+                  },
+                ].map((item, index) => (
+                  <div key={index} className="faq-item">
+                    <button
+                      className="faq-question"
+                      onClick={() => toggleFaq(index)}
+                    >
+                      <span className="faq-text">
+                        <strong>{item.question}</strong>
+                      </span>
+                      <ChevronDown
+                        className={`faq-icon ${
+                          openFaq === index ? "open" : ""
+                        }`}
+                      />
+                    </button>
+                    {openFaq === index && (
+                      <div className="faq-answer">{item.answer}</div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -398,8 +467,10 @@ const GoMakkahPage = () => {
               ].map((service, index) => (
                 <div key={index} className="service-item">
                   <div className="service-icon">{service.icon}</div>
-                  <h4 className="service-title">{service.title}</h4>
-                  <p className="service-description">{service.description}</p>
+                  <div>
+                    <h4 className="service-title">{service.title}</h4>
+                    <p className="service-description">{service.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -416,78 +487,61 @@ const GoMakkahPage = () => {
               Deux formules adaptées à vos besoins
             </h2>
 
-            <div className="packages-grid">
-              {/* Pack Gratuit */}
-              <div className="package-card free">
-                <div className="package-header">
-                  <div className="package-badge">Pack Gratuit</div>
-                  <h3 className="package-title">Hajj Assistance GO-Makkah</h3>
+            <div class="packs-container">
+              <div class="pack-card free">
+                <div class="pack-ribbon">Pack Gratuit</div>
+                <h3 class="pack-title">
+                  <span class="highlight">Hajj Assistance</span> GO-Makkah
+                </h3>
+                <div class="pack-bar free-bar">
+                  7% de nos clients ont le choisi
                 </div>
-                <div className="package-stats">
-                  <span className="stats-text">
-                    7% de nos client ont le choisis
-                  </span>
-                </div>
-                <div className="package-content">
-                  <p className="package-feature">
-                    Nous vous inscrivons sur notre groupe whatsup d'information
+                <ul class="pack-features">
+                  <li>
+                    Nous vous inscrivons sur notre groupe WhatsApp d’information
                     & assistance
-                  </p>
-                  <p className="package-feature">
-                    Nous vous envoyons nos formules Hajj 2026
-                  </p>
-                  <p className="package-feature">
-                    Vous créez par vous-même votre compte Nusuk
-                  </p>
-                  <p className="package-feature">
-                    Vous réservez une de nos formules
-                  </p>
-                  <p className="package-feature">
+                  </li>
+                  <li>Nous vous envoyons nos formules Hajj 2026</li>
+                  <li>Vous créez par vous-même votre compte Nusuk</li>
+                  <li>Vous réservez une de nos formules</li>
+                  <li>
                     Vous nous envoyez votre passeport et la formule confirmée
-                  </p>
-                  <button className="package-button free-btn">
-                    Inscrivez-vous vite !
-                  </button>
-                </div>
+                  </li>
+                </ul>
+                <button class="pack-btn free-btn">Inscrivez-vous vite !</button>
               </div>
 
-              {/* Pack 250 EUR */}
-              <div className="package-card premium">
-                <div className="package-header">
-                  <div className="package-badge">250 EUR</div>
-                  <h3 className="package-title">Hajj Sérénité GO-Makkah</h3>
+              <div class="pack-card premium">
+                <div class="pack-ribbon gold">250 EUR</div>
+                <h3 class="pack-title gold-text">
+                  <span class="highlight gold-text">Hajj Sérénité</span>{" "}
+                  GO-Makkah
+                </h3>
+                <div class="pack-bar gold-bar">
+                  80% de nos clients ont le choisi
                 </div>
-                <div className="package-stats">
-                  <span className="stats-text">
-                    80% de nos client ont le choisis
-                  </span>
-                </div>
-                <div className="package-content">
-                  <p className="package-feature">
-                    Nous vous inscrivons sur notre groupe whatsup d'information
+                <ul class="pack-features">
+                  <li>
+                    Nous vous inscrivons sur notre groupe WhatsApp d’information
                     & assistance
-                  </p>
-                  <p className="package-feature">
-                    Nous créons et gérons pour vous votre compte NUSUK
-                  </p>
-                  <p className="package-feature">
-                    Nous payons votre hajj pour vous si vous le demander. Vos
-                    payez votre hajj chez nous
-                  </p>
-                  <p className="package-feature">
-                    Nous vous envoyons nos formules Hajj 2026
-                  </p>
-                  <p className="package-feature">
-                    Nous gérons la réservation de votre hajj jusqu'au bout
-                  </p>
-                  <p className="package-feature">
-                    Et Vous partez au hajj avec nos équipes accompagnateurs très
-                    expérimentés
-                  </p>
-                  <button className="package-button premium-btn">
-                    Inscrivez-vous vite !
-                  </button>
-                </div>
+                  </li>
+                  <li>Nous créons et gérons pour vous votre compte Nusuk</li>
+                  <li>
+                    Nous payons votre Hajj pour vous si vous le demandez. Vous
+                    payez votre Hajj chez nous
+                  </li>
+                  <li>Nous vous envoyons nos formules Hajj 2026</li>
+                  <li>
+                    Nous gérons la réservation de votre Hajj jusqu’au bout
+                  </li>
+                  <li>
+                    Vous partez au Hajj avec nos équipes accompagnatrices très
+                    expérimentées
+                  </li>
+                </ul>
+                <button class="pack-btn premium-btn">
+                  Inscrivez-vous vite !
+                </button>
               </div>
             </div>
           </section>
@@ -627,7 +681,7 @@ const GoMakkahPage = () => {
               <span className="help-link">page d'aide</span>.
             </p>
 
-            <div className="faq-container">
+            <div className="faq-container2">
               {[
                 "Qu'est-ce que le Hajj ?",
                 "Quand a lieu le Hajj ?",
@@ -636,18 +690,18 @@ const GoMakkahPage = () => {
                 "Quelle est la différence entre le Hajj et la 'Umra ?",
                 "Quels sont les bienfaits du Hajj ?",
               ].map((question, index) => (
-                <div key={index} className="faq-item">
+                <div key={index} className="faq-item2">
                   <button
-                    className="faq-question"
+                    className="faq-question2"
                     onClick={() => toggleFaq(index)}
                   >
-                    <span className="faq-text">{question}</span>
+                    <span className="faq-text2">{question}</span>
                     <ChevronDown
-                      className={`faq-icon ${openFaq === index ? "open" : ""}`}
+                      className={`faq-icon2 ${openFaq === index ? "open" : ""}`}
                     />
                   </button>
                   {openFaq === index && (
-                    <div className="faq-answer">
+                    <div className="faq-answer2">
                       <p>Contenu de réponse pour la question : {question}</p>
                     </div>
                   )}
