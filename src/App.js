@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "../src/componant/Login";
 import SignUp from "../src/componant/SignUp";
 import GoMakkahPage from "../src/componant/GoMakkaPage";
@@ -8,6 +8,22 @@ import "./App.css";
 function App() {
   const [currentPage, setCurrentPage] = useState("login");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Vérifier si un utilisateur est déjà connecté
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser) {
+      setIsAuthenticated(true);
+      setCurrentPage("home");
+    }
+  }, []);
+
+  const handleLogout = () => {
+    // Supprimer l'utilisateur connecté
+    localStorage.removeItem("currentUser");
+    setIsAuthenticated(false);
+    setCurrentPage("login");
+  };
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
@@ -39,10 +55,10 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setCurrentPage("login");
-  };
+  // const handleLogout = () => {
+  //   setIsAuthenticated(false);
+  //   setCurrentPage("login");
+  // };
 
   return (
     <div className="App">

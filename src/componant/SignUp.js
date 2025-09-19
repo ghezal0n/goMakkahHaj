@@ -146,15 +146,29 @@ const SignUp = ({ onSignUpSuccess, onBackToLogin }) => {
     setIsLoading(true);
 
     try {
-      // Simulation d'une création de compte
+      // Récupérer les utilisateurs existants
+      const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Vérifier si l'email existe déjà
+      if (existingUsers.some((user) => user.email === formData.email)) {
+        throw new Error("Un compte avec cet email existe déjà");
+      }
+
+      // Créer un nouvel utilisateur sans le mot de passe de confirmation
+      const { confirmPassword, ...userData } = formData;
+
+      // Ajouter le nouvel utilisateur
+      existingUsers.push(userData);
+
+      // Stocker dans localStorage
+      localStorage.setItem("users", JSON.stringify(existingUsers));
+
+      // Simulation de délai
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Compte créé avec succès
       onSignUpSuccess();
     } catch (error) {
-      setErrors({
-        general: "Erreur lors de la création du compte. Veuillez réessayer.",
-      });
+      setErrors({ general: error.message });
     } finally {
       setIsLoading(false);
     }

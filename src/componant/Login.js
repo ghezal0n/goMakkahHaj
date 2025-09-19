@@ -51,10 +51,24 @@ const Login = ({ onLoginSuccess, onNavigateToSignUp }) => {
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Récupérer les utilisateurs depuis localStorage
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Chercher l'utilisateur
+      const user = users.find(
+        (u) => u.email === formData.email && u.password === formData.password
+      );
+
+      if (!user) {
+        throw new Error("Email ou mot de passe incorrect");
+      }
+
+      // Stocker l'utilisateur connecté dans localStorage
+      localStorage.setItem("currentUser", JSON.stringify(user));
+
       onLoginSuccess();
     } catch (error) {
-      setErrors({ general: "Erreur de connexion. Veuillez réessayer." });
+      setErrors({ general: error.message });
     } finally {
       setIsLoading(false);
     }

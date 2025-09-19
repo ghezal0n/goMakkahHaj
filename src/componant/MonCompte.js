@@ -1,39 +1,111 @@
 // File: MonComptePage.jsx
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import {
   Phone,
   User,
   Users,
-  ChevronDown,
-  Check,
   Edit,
   Calendar,
   CreditCard,
   FileText,
   Mail,
-  Settings,
   LogOut,
   Download,
   Eye,
 } from "lucide-react";
-import "../componant/MonCompte.css";
+import "./MonCompte.css";
 
-const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
+const MonComptePage = ({ onNavigateToHome, onLogout }) => {
   const [activeTab, setActiveTab] = useState("profil");
   const [isEditing, setIsEditing] = useState(false);
-
   const [userData, setUserData] = useState({
-    nom: "Ghezal",
-    prenom: "Mohamed",
-    email: "mohamed.ghezal@gmail.com",
-    telephone: "+33 7 15 35 76 98",
-    adresse: "25 Rue de la République",
-    ville: "Paris",
-    codePostal: "75011",
-    dateNaissance: "15/02/1999",
-    numeroPasseport: "18AA12345",
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+    adresse: "",
+    ville: "",
+    codePostal: "",
+    dateNaissance: "",
+    numeroPasseport: "",
   });
+
+  // Charger les données de l'utilisateur connecté depuis localStorage
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
+    if (currentUser) {
+      // Formater les données pour correspondre à la structure de userData
+      const formattedData = {
+        nom: currentUser.lastName || "",
+        prenom: currentUser.firstName || "",
+        email: currentUser.email || "",
+        telephone: currentUser.phone || "",
+        adresse: currentUser.address || "",
+        ville: currentUser.city || "",
+        codePostal: currentUser.postalCode || "",
+        dateNaissance: currentUser.dateOfBirth
+          ? formatDate(currentUser.dateOfBirth)
+          : "",
+        numeroPasseport: currentUser.numeroPasseport || "18AA12345", // Valeur par défaut
+      };
+
+      setUserData(formattedData);
+    }
+  }, []);
+
+  // Fonction pour formater la date
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("fr-FR");
+    } catch (error) {
+      console.error("Erreur de format de date:", error);
+      return "";
+    }
+  };
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+
+    // Mettre à jour les données dans localStorage
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    const allUsers = JSON.parse(localStorage.getItem("users") || "[]");
+
+    if (currentUser && currentUser.email) {
+      // Mettre à jour l'utilisateur courant
+      const updatedCurrentUser = {
+        ...currentUser,
+        firstName: userData.prenom,
+        lastName: userData.nom,
+        email: userData.email,
+        phone: userData.telephone,
+        address: userData.adresse,
+        city: userData.ville,
+        postalCode: userData.codePostal,
+        numeroPasseport: userData.numeroPasseport,
+      };
+
+      localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUser));
+
+      // Mettre à jour dans la liste des utilisateurs
+      const updatedUsers = allUsers.map((user) =>
+        user.email === currentUser.email ? updatedCurrentUser : user
+      );
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setUserData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const reservations = [
     {
@@ -69,15 +141,6 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
     },
   ];
 
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const handleSave = () => {
-    setIsEditing(false);
-    // Ici tu peux appeler une API pour sauvegarder userData si nécessaire
-  };
-
   const renderProfilTab = () => (
     <div className="tab-content">
       <div className="tab-header">
@@ -100,12 +163,8 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
               type="text"
               value={userData.nom}
               disabled={!isEditing}
-              onChange={(e) =>
-                setUserData({ ...userData, nom: e.target.value })
-              }
-              className={`input ${
-                isEditing ? "input-active" : "input-disabled"
-              }`}
+              onChange={(e) => handleInputChange("nom", e.target.value)}
+              className={isEditing ? "input-active" : "input-disabled"}
             />
           </div>
 
@@ -115,12 +174,8 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
               type="text"
               value={userData.prenom}
               disabled={!isEditing}
-              onChange={(e) =>
-                setUserData({ ...userData, prenom: e.target.value })
-              }
-              className={`input ${
-                isEditing ? "input-active" : "input-disabled"
-              }`}
+              onChange={(e) => handleInputChange("prenom", e.target.value)}
+              className={isEditing ? "input-active" : "input-disabled"}
             />
           </div>
 
@@ -130,12 +185,8 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
               type="email"
               value={userData.email}
               disabled={!isEditing}
-              onChange={(e) =>
-                setUserData({ ...userData, email: e.target.value })
-              }
-              className={`input ${
-                isEditing ? "input-active" : "input-disabled"
-              }`}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+              className={isEditing ? "input-active" : "input-disabled"}
             />
           </div>
 
@@ -145,12 +196,64 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
               type="tel"
               value={userData.telephone}
               disabled={!isEditing}
+              onChange={(e) => handleInputChange("telephone", e.target.value)}
+              className={isEditing ? "input-active" : "input-disabled"}
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Adresse</label>
+            <input
+              type="text"
+              value={userData.adresse}
+              disabled={!isEditing}
+              onChange={(e) => handleInputChange("adresse", e.target.value)}
+              className={isEditing ? "input-active" : "input-disabled"}
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Ville</label>
+            <input
+              type="text"
+              value={userData.ville}
+              disabled={!isEditing}
+              onChange={(e) => handleInputChange("ville", e.target.value)}
+              className={isEditing ? "input-active" : "input-disabled"}
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Code postal</label>
+            <input
+              type="text"
+              value={userData.codePostal}
+              disabled={!isEditing}
+              onChange={(e) => handleInputChange("codePostal", e.target.value)}
+              className={isEditing ? "input-active" : "input-disabled"}
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Date de naissance</label>
+            <input
+              type="text"
+              value={userData.dateNaissance}
+              disabled={true}
+              className="input-disabled"
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Numéro de passeport</label>
+            <input
+              type="text"
+              value={userData.numeroPasseport}
+              disabled={!isEditing}
               onChange={(e) =>
-                setUserData({ ...userData, telephone: e.target.value })
+                handleInputChange("numeroPasseport", e.target.value)
               }
-              className={`input ${
-                isEditing ? "input-active" : "input-disabled"
-              }`}
+              className={isEditing ? "input-active" : "input-disabled"}
             />
           </div>
         </div>
@@ -312,7 +415,7 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
         </div>
       </header>
 
-      {/* Navigation (laisse telle qu'elle, on ne modifie pas la logique) */}
+      {/* Navigation */}
       <nav className="navigation">
         <div className="container nav-container">
           <div className="nav-links">
@@ -351,11 +454,7 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
           </div>
 
           <div className="account-links">
-            <div
-              className="account-link active"
-              onClick={onNavigateToAccount}
-              style={{ cursor: "pointer" }}
-            >
+            <div className="account-link active" style={{ cursor: "pointer" }}>
               <a href="#" className="nav-link active">
                 Mon compte
               </a>
@@ -379,7 +478,9 @@ const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
                 <User size={32} color="white" />
               </div>
               <div>
-                <h3 className="member-name">Mohamed Ghezal</h3>
+                <h3 className="member-name">
+                  {userData.prenom} {userData.nom}
+                </h3>
                 <p className="muted">Membre depuis 2023</p>
               </div>
             </div>
