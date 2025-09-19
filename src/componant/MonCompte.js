@@ -1,4 +1,6 @@
+// File: MonComptePage.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Phone,
   User,
@@ -15,10 +17,12 @@ import {
   Download,
   Eye,
 } from "lucide-react";
+import "../componant/MonCompte.css";
 
-const MonComptePage = ({ onNavigateToHome }) => {
+const MonComptePage = ({ onNavigateToHome, onNavigateToAccount, onLogout }) => {
   const [activeTab, setActiveTab] = useState("profil");
   const [isEditing, setIsEditing] = useState(false);
+
   const [userData, setUserData] = useState({
     nom: "Ghezal",
     prenom: "Mohamed",
@@ -71,80 +75,27 @@ const MonComptePage = ({ onNavigateToHome }) => {
 
   const handleSave = () => {
     setIsEditing(false);
+    // Ici tu peux appeler une API pour sauvegarder userData si nécessaire
   };
 
   const renderProfilTab = () => (
-    <div style={{ padding: "32px" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "32px",
-          paddingBottom: "16px",
-          borderBottom: "1px solid #e5e7eb",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "24px",
-            fontWeight: "600",
-            color: "#2b6cb3",
-            margin: 0,
-          }}
-        >
-          Mon Profil
-        </h2>
+    <div className="tab-content">
+      <div className="tab-header">
+        <h2>Mon Profil</h2>
         <button
           onClick={isEditing ? handleSave : handleEditToggle}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            background: isEditing ? "#22c55e" : "#be9e49",
-            color: "white",
-          }}
+          className={`btn ${isEditing ? "btn-save" : "btn-edit"}`}
         >
           <Edit size={16} />
-          {isEditing ? "Sauvegarder" : "Modifier"}
+          <span>{isEditing ? "Sauvegarder" : "Modifier"}</span>
         </button>
       </div>
 
-      <div
-        style={{ background: "#f9fafb", padding: "24px", borderRadius: "12px" }}
-      >
-        <h3
-          style={{
-            fontSize: "18px",
-            fontWeight: "600",
-            color: "#374151",
-            marginBottom: "20px",
-          }}
-        >
-          Informations personnelles
-        </h3>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          <div>
-            <label
-              style={{
-                fontWeight: "500",
-                color: "#374151",
-                display: "block",
-                marginBottom: "8px",
-              }}
-            >
-              Nom
-            </label>
+      <div className="card-light">
+        <h3>Informations personnelles</h3>
+        <div className="form-grid">
+          <div className="form-field">
+            <label>Nom</label>
             <input
               type="text"
               value={userData.nom}
@@ -152,27 +103,14 @@ const MonComptePage = ({ onNavigateToHome }) => {
               onChange={(e) =>
                 setUserData({ ...userData, nom: e.target.value })
               }
-              style={{
-                padding: "12px",
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                width: "100%",
-                background: isEditing ? "white" : "#f9fafb",
-                color: isEditing ? "#000" : "#6b7280",
-              }}
+              className={`input ${
+                isEditing ? "input-active" : "input-disabled"
+              }`}
             />
           </div>
-          <div>
-            <label
-              style={{
-                fontWeight: "500",
-                color: "#374151",
-                display: "block",
-                marginBottom: "8px",
-              }}
-            >
-              Prénom
-            </label>
+
+          <div className="form-field">
+            <label>Prénom</label>
             <input
               type="text"
               value={userData.prenom}
@@ -180,27 +118,14 @@ const MonComptePage = ({ onNavigateToHome }) => {
               onChange={(e) =>
                 setUserData({ ...userData, prenom: e.target.value })
               }
-              style={{
-                padding: "12px",
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                width: "100%",
-                background: isEditing ? "white" : "#f9fafb",
-                color: isEditing ? "#000" : "#6b7280",
-              }}
+              className={`input ${
+                isEditing ? "input-active" : "input-disabled"
+              }`}
             />
           </div>
-          <div>
-            <label
-              style={{
-                fontWeight: "500",
-                color: "#374151",
-                display: "block",
-                marginBottom: "8px",
-              }}
-            >
-              Email
-            </label>
+
+          <div className="form-field">
+            <label>Email</label>
             <input
               type="email"
               value={userData.email}
@@ -208,27 +133,14 @@ const MonComptePage = ({ onNavigateToHome }) => {
               onChange={(e) =>
                 setUserData({ ...userData, email: e.target.value })
               }
-              style={{
-                padding: "12px",
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                width: "100%",
-                background: isEditing ? "white" : "#f9fafb",
-                color: isEditing ? "#000" : "#6b7280",
-              }}
+              className={`input ${
+                isEditing ? "input-active" : "input-disabled"
+              }`}
             />
           </div>
-          <div>
-            <label
-              style={{
-                fontWeight: "500",
-                color: "#374151",
-                display: "block",
-                marginBottom: "8px",
-              }}
-            >
-              Téléphone
-            </label>
+
+          <div className="form-field">
+            <label>Téléphone</label>
             <input
               type="tel"
               value={userData.telephone}
@@ -236,14 +148,9 @@ const MonComptePage = ({ onNavigateToHome }) => {
               onChange={(e) =>
                 setUserData({ ...userData, telephone: e.target.value })
               }
-              style={{
-                padding: "12px",
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                width: "100%",
-                background: isEditing ? "white" : "#f9fafb",
-                color: isEditing ? "#000" : "#6b7280",
-              }}
+              className={`input ${
+                isEditing ? "input-active" : "input-disabled"
+              }`}
             />
           </div>
         </div>
@@ -252,154 +159,48 @@ const MonComptePage = ({ onNavigateToHome }) => {
   );
 
   const renderReservationsTab = () => (
-    <div style={{ padding: "32px" }}>
-      <div
-        style={{
-          marginBottom: "32px",
-          paddingBottom: "16px",
-          borderBottom: "1px solid #e5e7eb",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "24px",
-            fontWeight: "600",
-            color: "#2b6cb3",
-            margin: 0,
-          }}
-        >
-          Mes Réservations
-        </h2>
+    <div className="tab-content">
+      <div className="section-header">
+        <h2>Mes Réservations</h2>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div className="stack">
         {reservations.map((reservation) => (
-          <div
-            key={reservation.id}
-            style={{
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-              padding: "24px",
-              transition: "box-shadow 0.3s",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-              }}
-            >
+          <div key={reservation.id} className="reservation-card">
+            <div className="reservation-top">
               <div>
-                <h3
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    color: "#2b6cb3",
-                    margin: 0,
-                  }}
-                >
-                  {reservation.type}
-                </h3>
-                <span style={{ fontSize: "14px", color: "#6b7280" }}>
-                  #{reservation.id}
-                </span>
+                <h3 className="reservation-title">{reservation.type}</h3>
+                <span className="muted">#{reservation.id}</span>
               </div>
               <div
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: "20px",
-                  fontSize: "12px",
-                  fontWeight: "600",
-                  background:
-                    reservation.statut === "Confirmé" ? "#d1fae5" : "#f3f4f6",
-                  color:
-                    reservation.statut === "Confirmé" ? "#065f46" : "#374151",
-                }}
+                className={`status-badge ${
+                  reservation.statut === "Confirmé" ? "status-confirm" : ""
+                }`}
               >
                 {reservation.statut}
               </div>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                gap: "24px",
-                marginBottom: "20px",
-                flexWrap: "wrap",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  fontSize: "14px",
-                  color: "#6b7280",
-                }}
-              >
-                <Calendar size={16} />
+            <div className="reservation-meta">
+              <div className="meta-item">
+                <Calendar size={16} />{" "}
                 <span>Départ: {reservation.dateDepart}</span>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  fontSize: "14px",
-                  color: "#6b7280",
-                }}
-              >
-                <Calendar size={16} />
+              <div className="meta-item">
+                <Calendar size={16} />{" "}
                 <span>Retour: {reservation.dateRetour}</span>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  fontSize: "14px",
-                  color: "#6b7280",
-                }}
-              >
-                <CreditCard size={16} />
-                <span>Prix: {reservation.prix}</span>
+              <div className="meta-item">
+                <CreditCard size={16} /> <span>Prix: {reservation.prix}</span>
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "12px" }}>
-              <button
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "10px 16px",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  background: "#2b6cb3",
-                  color: "white",
-                }}
-              >
-                <Eye size={16} />
-                Voir détails
+            <div className="card-actions">
+              <button className="btn btn-primary">
+                <Eye size={16} /> Voir détails
               </button>
-              <button
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "10px 16px",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  background: "#f3f4f6",
-                  color: "#374151",
-                }}
-              >
-                <Download size={16} />
-                Télécharger
+              <button className="btn btn-ghost">
+                <Download size={16} /> Télécharger
               </button>
             </div>
           </div>
@@ -409,107 +210,28 @@ const MonComptePage = ({ onNavigateToHome }) => {
   );
 
   const renderDocumentsTab = () => (
-    <div style={{ padding: "32px" }}>
-      <div
-        style={{
-          marginBottom: "32px",
-          paddingBottom: "16px",
-          borderBottom: "1px solid #e5e7eb",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "24px",
-            fontWeight: "600",
-            color: "#2b6cb3",
-            margin: 0,
-          }}
-        >
-          Mes Documents
-        </h2>
+    <div className="tab-content">
+      <div className="section-header">
+        <h2>Mes Documents</h2>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <div className="stack">
         {documents.map((doc, index) => (
-          <div
-            key={index}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "16px",
-              padding: "20px",
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-            }}
-          >
-            <div
-              style={{
-                width: "50px",
-                height: "50px",
-                background: "#be9e49",
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+          <div key={index} className="document-card">
+            <div className="doc-icon">
               <FileText size={24} color="white" />
             </div>
-            <div style={{ flex: 1 }}>
-              <h4
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  color: "#374151",
-                  margin: "0 0 4px 0",
-                }}
-              >
-                {doc.nom}
-              </h4>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "8px",
-                  fontSize: "14px",
-                  color: "#6b7280",
-                }}
-              >
-                <span>{doc.type}</span>
-                <span>•</span>
-                <span>{doc.taille}</span>
-                <span>•</span>
-                <span>{doc.date}</span>
+            <div className="doc-meta">
+              <h4 className="doc-title">{doc.nom}</h4>
+              <div className="muted small">
+                {doc.type} • {doc.taille} • {doc.date}
               </div>
             </div>
-            <div style={{ display: "flex", gap: "8px" }}>
-              <button
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  border: "none",
-                  background: "#f3f4f6",
-                  borderRadius: "6px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                }}
-              >
+            <div className="doc-actions">
+              <button className="icon-btn">
                 <Eye size={16} />
               </button>
-              <button
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  border: "none",
-                  background: "#f3f4f6",
-                  borderRadius: "6px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                }}
-              >
+              <button className="icon-btn">
                 <Download size={16} />
               </button>
             </div>
@@ -520,146 +242,38 @@ const MonComptePage = ({ onNavigateToHome }) => {
   );
 
   const renderSupportTab = () => (
-    <div style={{ padding: "32px" }}>
-      <div
-        style={{
-          marginBottom: "32px",
-          paddingBottom: "16px",
-          borderBottom: "1px solid #e5e7eb",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "24px",
-            fontWeight: "600",
-            color: "#2b6cb3",
-            margin: 0,
-          }}
-        >
-          Support & Assistance
-        </h2>
+    <div className="tab-content">
+      <div className="section-header">
+        <h2>Support & Assistance</h2>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "24px",
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            padding: "24px",
-            background: "#f9fafb",
-            borderRadius: "12px",
-          }}
-        >
-          <div
-            style={{
-              width: "60px",
-              height: "60px",
-              background: "#be9e49",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 16px",
-            }}
-          >
+      <div className="support-grid">
+        <div className="support-card2">
+          <div className="support-icon">
             <Phone size={24} color="white" />
           </div>
-          <h3 style={{ margin: "0 0 8px 0" }}>Support téléphonique</h3>
-          <p style={{ margin: "0 0 16px 0" }}>Disponible 24h/24, 7j/7</p>
-          <div
-            style={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              color: "#2b6cb3",
-              marginBottom: "8px",
-            }}
-          >
-            01 49 87 70 21
-          </div>
-          <p style={{ margin: 0, fontSize: "14px", color: "#6b7280" }}>
-            Français • Arabe
-          </p>
+          <h3>Support téléphonique</h3>
+          <p className="muted">Disponible 24h/24, 7j/7</p>
+          <div className="phone-big">01 49 87 70 21</div>
+          <p className="muted small">Français • Arabe</p>
         </div>
 
-        <div
-          style={{
-            textAlign: "center",
-            padding: "24px",
-            background: "#f9fafb",
-            borderRadius: "12px",
-          }}
-        >
-          <div
-            style={{
-              width: "60px",
-              height: "60px",
-              background: "#be9e49",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 16px",
-            }}
-          >
+        <div className="support-card2">
+          <div className="support-icon">
             <Mail size={24} color="white" />
           </div>
-          <h3 style={{ margin: "0 0 8px 0" }}>Support par email</h3>
-          <p style={{ margin: "0 0 16px 0" }}>Réponse sous 24h</p>
-          <button
-            style={{
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "8px",
-              background: "#2b6cb3",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            Envoyer un message
-          </button>
+          <h3>Support par email</h3>
+          <p className="muted">Réponse sous 24h</p>
+          <button className="btn btn-primary">Envoyer un message</button>
         </div>
 
-        <div
-          style={{
-            textAlign: "center",
-            padding: "24px",
-            background: "#f9fafb",
-            borderRadius: "12px",
-          }}
-        >
-          <div
-            style={{
-              width: "60px",
-              height: "60px",
-              background: "#be9e49",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 16px",
-            }}
-          >
+        <div className="support-card2">
+          <div className="support-icon">
             <Users size={24} color="white" />
           </div>
-          <h3 style={{ margin: "0 0 8px 0" }}>Groupe WhatsApp</h3>
-          <p style={{ margin: "0 0 16px 0" }}>Assistance et informations</p>
-          <button
-            style={{
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "8px",
-              background: "#22c55e",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            Rejoindre le groupe
-          </button>
+          <h3>Groupe WhatsApp</h3>
+          <p className="muted">Assistance et informations</p>
+          <button className="btn btn-success">Rejoindre le groupe</button>
         </div>
       </div>
     </div>
@@ -681,257 +295,124 @@ const MonComptePage = ({ onNavigateToHome }) => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#f5f5f5",
-        fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
-      }}
-    >
+    <div className="account-page">
       {/* Header */}
-      <header
-        style={{
-          backgroundColor: "#991b1b",
-          color: "white",
-          padding: "16px 0",
-        }}
-      >
-        <div
-          style={{
-            padding: "0 50px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+      <header className="account-header">
+        <div className="header-inner">
           <div onClick={onNavigateToHome} style={{ cursor: "pointer" }}>
-            <h1
-              style={{
-                fontSize: "24px",
-                fontWeight: "bold",
-                margin: "0 0 4px 0",
-              }}
-            >
-              GO-MAKKAH
-            </h1>
-            <p style={{ fontSize: "14px", margin: 0 }}>
-              Quand foi et prestige se rencontrent
-            </p>
+            <h1 className="brand">GO-MAKKAH</h1>
+            <p className="tagline">Quand foi et prestige se rencontrent</p>
           </div>
-          <div style={{ textAlign: "right" }}>
-            <div
-              style={{
-                fontSize: "20px",
-                fontWeight: "bold",
-                marginBottom: "4px",
-              }}
-            >
-              01 49 87 70 21
-            </div>
-            <div style={{ fontSize: "14px" }}>
+          <div className="contact-block">
+            <div className="contact-phone">01 49 87 70 21</div>
+            <div className="contact-address">
               32 avenue Pierre Semard, 94200
             </div>
           </div>
         </div>
       </header>
 
-      {/* Navigation */}
-      <nav
-        style={{
-          backgroundColor: "white",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-          padding: "0px 50px",
-        }}
-      >
-        <div
-          style={{
-            padding: "16px 50px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ display: "flex", gap: "32px" }}>
+      {/* Navigation (laisse telle qu'elle, on ne modifie pas la logique) */}
+      <nav className="navigation">
+        <div className="container nav-container">
+          <div className="nav-links">
             <a
               href="#"
+              className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
-                onNavigateToHome();
+                onNavigateToHome && onNavigateToHome();
               }}
-              style={{ color: "#4b5563", textDecoration: "none" }}
             >
               Accueil
             </a>
-            <a href="#" style={{ color: "#4b5563", textDecoration: "none" }}>
+            <a href="#" className="nav-link">
               Omra
             </a>
-            <a href="#" style={{ color: "#4b5563", textDecoration: "none" }}>
+            <a href="#" className="nav-link">
               Omra combinée
             </a>
             <a
               href="#"
+              className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
-                onNavigateToHome();
+                onNavigateToHome && onNavigateToHome();
               }}
-              style={{ color: "#4b5563", textDecoration: "none" }}
             >
               Hajj
             </a>
-            <a href="#" style={{ color: "#4b5563", textDecoration: "none" }}>
-              Voyages
+            <a href="#" className="nav-link">
+              Voyages Monde
             </a>
-            <a href="#" style={{ color: "#4b5563", textDecoration: "none" }}>
-              Monde
-            </a>
-            <a href="#" style={{ color: "#4b5563", textDecoration: "none" }}>
+            <a href="#" className="nav-link">
               Nos services
             </a>
           </div>
-          <div style={{ display: "flex", gap: "16px" }}>
+
+          <div className="account-links">
             <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: "#991b1b",
-                fontWeight: "600",
-              }}
+              className="account-link active"
+              onClick={onNavigateToAccount}
+              style={{ cursor: "pointer" }}
             >
-              <User size={16} />
-              <span>Mon compte</span>
+              <a href="#" className="nav-link active">
+                Mon compte
+              </a>
+            </div>
+
+            <div className="account-link">
+              <Users className="icon-small" />
+              <span>Espace client</span>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <div style={{ padding: "48px 0" }}>
-        <div style={{ padding: "0 50px" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "280px 1fr",
-              gap: "48px",
-            }}
-          >
-            {/* Sidebar */}
-            <div
-              style={{
-                background: "white",
-                borderRadius: "12px",
-                padding: "24px",
-                height: "fit-content",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "16px",
-                  marginBottom: "32px",
-                  paddingBottom: "24px",
-                  borderBottom: "1px solid #e5e7eb",
-                }}
-              >
-                <div
-                  style={{
-                    width: "60px",
-                    height: "60px",
-                    background: "#be9e49",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <User size={32} color="white" />
-                </div>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: "18px", color: "#2b6cb3" }}>
-                    Mohamed Ghezal
-                  </h3>
-                  <p style={{ margin: 0, fontSize: "14px", color: "#6b7280" }}>
-                    Membre depuis 2023
-                  </p>
-                </div>
+      <div className="main-wrap">
+        <div className="account-layout">
+          {/* Sidebar */}
+          <aside className="sidebar2">
+            <div className="sidebar2-top">
+              <div className="avatar">
+                <User size={32} color="white" />
               </div>
+              <div>
+                <h3 className="member-name">Mohamed Ghezal</h3>
+                <p className="muted">Membre depuis 2023</p>
+              </div>
+            </div>
 
-              <nav
-                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-              >
-                {[
-                  { key: "profil", icon: User, label: "Mon Profil" },
-                  {
-                    key: "reservations",
-                    icon: Calendar,
-                    label: "Mes Réservations",
-                  },
-                  { key: "documents", icon: FileText, label: "Mes Documents" },
-                  { key: "support", icon: Phone, label: "Support" },
-                ].map(({ key, icon: Icon, label }) => (
-                  <button
-                    key={key}
-                    onClick={() => setActiveTab(key)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "12px",
-                      padding: "12px 16px",
-                      border: "none",
-                      background: activeTab === key ? "#2b6cb3" : "transparent",
-                      color: activeTab === key ? "white" : "#374151",
-                      textAlign: "left",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      width: "100%",
-                    }}
-                  >
-                    <Icon size={20} />
-                    {label}
-                  </button>
-                ))}
-
-                {/* <button
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                    padding: "12px 16px",
-                    border: "none",
-                    background: "transparent",
-                    color: "#ef4444",
-                    textAlign: "left",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    marginTop: "16px",
-                    borderTop: "1px solid #e5e7eb",
-                    paddingTop: "20px",
-                    width: "100%",
-                  }}
+            <nav className="sidebar-nav">
+              {[
+                { key: "profil", icon: User, label: "Mon Profil" },
+                {
+                  key: "reservations",
+                  icon: Calendar,
+                  label: "Mes Réservations",
+                },
+                { key: "documents", icon: FileText, label: "Mes Documents" },
+                { key: "support", icon: Phone, label: "Support" },
+              ].map(({ key, icon: Icon, label }) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className={`sidebar-btn ${activeTab === key ? "active" : ""}`}
                 >
-                  <LogOut size={20} />
-                  Déconnexion
-                </button> */}
-              </nav>
-            </div>
+                  <Icon size={20} />
+                  <span>{label}</span>
+                </button>
+              ))}
+              <button onClick={onLogout} className="sidebar-btn logout-btn">
+                <LogOut size={20} />
+                <span>Déconnexion</span>
+              </button>
+            </nav>
+          </aside>
 
-            {/* Main Content */}
-            <div
-              style={{
-                background: "white",
-                borderRadius: "12px",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-              }}
-            >
-              {renderTabContent()}
-            </div>
-          </div>
+          {/* Main Card */}
+          <main className="main-card">{renderTabContent()}</main>
         </div>
       </div>
     </div>
